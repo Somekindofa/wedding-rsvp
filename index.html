@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding RSVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --warm-white: #fffef9;
+    --gold: #b8975a;
+    --gold-light: #d4b47a;
+    --dark: #2a2118;
+    --mid: #6b5b45;
+    --light-border: rgba(184,151,90,0.25);
+    --shadow: rgba(42,33,24,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px 80px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(212,180,122,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(184,151,90,0.10) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; width: 100%; max-width: 580px; }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-top: 16px;
+  }
+
+  .ornament {
+    display: block;
+    color: var(--gold);
+    font-size: 22px;
+    letter-spacing: 12px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    color: var(--dark);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .subtitle {
+    margin-top: 14px;
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px auto;
+    max-width: 220px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-light));
+  }
+  .divider::after { background: linear-gradient(to left, transparent, var(--gold-light)); }
+  .divider span { color: var(--gold); font-size: 16px; }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 40px;
+  }
+
+  .lang-btn {
+    padding: 8px 28px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--light-border);
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .lang-btn:first-child { border-radius: 2px 0 0 2px; border-right: none; }
+  .lang-btn:last-child { border-radius: 0 2px 2px 0; }
+
+  .lang-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--warm-white);
+  }
+
+  /* FORM CARD */
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--light-border);
+    border-radius: 4px;
+    padding: 44px 40px;
+    box-shadow:
+      0 2px 4px var(--shadow),
+      0 12px 40px rgba(42,33,24,0.05);
+  }
+
+  @media (max-width: 500px) {
+    .card { padding: 32px 24px; }
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+
+  /* CHOICE BUTTONS (yes/no) */
+  .choice-group {
+    display: flex;
+    gap: 12px;
+  }
+
+  .choice-btn {
+    flex: 1;
+    padding: 14px 10px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--light-border);
+    border-radius: 2px;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.22s ease;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--gold-light);
+    color: var(--gold);
+  }
+
+  .choice-btn.selected-yes {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  .choice-btn.selected-no {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: white;
+  }
+
+  /* FIELDS */
+  .field-row {
+    display: flex;
+    gap: 16px;
+  }
+
+  .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 20px;
+  }
+
+  .field label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="number"],
+  .field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--dark);
+    background: var(--cream);
+    border: 1px solid var(--light-border);
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .field input[type="number"] { max-width: 100px; }
+
+  /* CHECKBOXES (dietary) */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .check-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--light-border);
+    border-radius: 2px;
+    background: var(--cream);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    position: relative;
+  }
+
+  .check-item input[type="checkbox"]:checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .check-item input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 6px;
+    height: 10px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+
+  .check-item span {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--dark);
+  }
+
+  /* HIDDEN / REVEALED SECTIONS */
+  .hidden { display: none; }
+
+  .revealed {
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* DECLINE MESSAGE */
+  .decline-msg {
+    text-align: center;
+    padding: 32px 0 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--dark);
+    color: var(--warm-white);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.22s ease;
+    margin-top: 8px;
+  }
+
+  .submit-btn:hover { background: var(--gold); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* SUCCESS */
+  .success-screen {
+    text-align: center;
+    padding: 40px 0;
+    display: none;
+  }
+
+  .success-screen .ornament { font-size: 32px; letter-spacing: 6px; margin-bottom: 24px; }
+
+  .success-screen h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    color: var(--dark);
+    margin-bottom: 14px;
+  }
+
+  .success-screen p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  /* EVENT INFO */
+  .event-info {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .event-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--dark);
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .event-location {
+    font-size: 0.78rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  .event-location a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--light-border);
+    transition: border-color 0.2s;
+  }
+
+  .event-location a:hover {
+    border-color: var(--gold);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(107,91,69,0.4);
+    font-weight: 300;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <span class="ornament">✦ ✦ ✦</span>
+    <h1 id="h-title">You are invited<br><em>Davetlisiniz</em></h1>
+    <p class="subtitle" id="h-sub">Please confirm your attendance &nbsp;·&nbsp; Katılımınızı onaylayın</p>
+    <div class="divider"><span>❧</span></div>
+
+    <div class="event-info">
+      <p class="event-date">26 June 2027 &nbsp;·&nbsp; 26 Haziran 2027</p>
+      <p class="event-location">
+        <a href="https://maps.google.com/?q=3182+Av.+de+la+Résistance,+83000+Toulon,+France" target="_blank" rel="noopener">
+          3182 Av. de la Résistance, 83000 Toulon, France
+        </a>
+      </p>
+    </div>
+  </header>
+
+  <!-- LANGUAGE TOGGLE -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">English</button>
+    <button class="lang-btn" onclick="setLang('tr')">Türkçe</button>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card">
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success-screen" id="successScreen">
+      <span class="ornament">✦ ✦ ✦</span>
+      <h2 id="s-title">Thank you!</h2>
+      <p id="s-body">We have received your response.<br>We look forward to celebrating with you.</p>
+    </div>
+
+    <!-- FORM -->
+    <form id="rsvpForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+      <!-- Hidden lang field -->
+      <input type="hidden" name="language" id="langField" value="en">
+
+      <!-- STEP 1: ATTENDANCE -->
+      <div class="section" id="step-attendance">
+        <p class="section-label" id="q-attend">Will you be joining us?</p>
+        <div class="choice-group">
+          <button type="button" class="choice-btn" id="btn-yes" onclick="selectAttendance(true)">
+            <span id="lbl-yes">Yes, with joy</span>
+          </button>
+          <button type="button" class="choice-btn" id="btn-no" onclick="selectAttendance(false)">
+            <span id="lbl-no">I cannot attend</span>
+          </button>
+        </div>
+        <input type="hidden" name="attendance" id="attendanceField" value="">
+      </div>
+
+      <!-- DECLINE MESSAGE -->
+      <div class="section hidden" id="step-decline">
+        <p class="decline-msg" id="msg-decline">
+          We are sorry you cannot join us.<br>
+          Thank you for letting us know — you will be in our hearts.
+        </p>
+        <button type="submit" class="submit-btn" id="btn-submit-decline">Send</button>
+      </div>
+
+      <!-- STEP 2+ (attending) -->
+      <div class="hidden" id="step-details">
+
+        <!-- NAME -->
+        <div class="section">
+          <div class="field-row">
+            <div class="field">
+              <label id="lbl-fname">First name</label>
+              <input type="text" name="first_name" id="first_name" autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label id="lbl-lname">Last name</label>
+              <input type="text" name="last_name" id="last_name" autocomplete="family-name">
+            </div>
+          </div>
+        </div>
+
+        <!-- CHILDREN -->
+        <div class="section">
+          <p class="section-label" id="q-children">Will you be bringing children?</p>
+
+          <div class="field-row">
+            <div class="field">
+              <label id="lbl-babies">Babies (0–3 yrs)</label>
+              <input type="number" name="babies" id="babies" min="0" max="10" value="0">
+            </div>
+            <div class="field">
+              <label id="lbl-toddlers">Children (3–12 yrs)</label>
+              <input type="number" name="toddlers" id="toddlers" min="0" max="10" value="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- DIETARY -->
+        <div class="section">
+          <p class="section-label" id="q-diet">Any dietary intolerances?</p>
+          <div class="checkbox-grid">
+            <label class="check-item">
+              <input type="checkbox" name="diet_gluten" value="gluten">
+              <span id="d-gluten">Gluten-free</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="diet_dairy" value="dairy">
+              <span id="d-dairy">Dairy-free</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="diet_nut" value="nuts">
+              <span id="d-nut">Nut allergy</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="diet_veg" value="vegetarian">
+              <span id="d-veg">Vegetarian</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="diet_vegan" value="vegan">
+              <span id="d-vegan">Vegan</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="diet_halal" value="halal">
+              <span id="d-halal">Halal</span>
+            </label>
+          </div>
+          <div class="field">
+            <label id="lbl-diet-other">Other (please specify)</label>
+            <input type="text" name="diet_other" id="diet_other">
+          </div>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="section">
+          <p class="section-label" id="q-contact">How can we reach you?</p>
+          <div class="field">
+            <label id="lbl-email">Email address</label>
+            <input type="email" name="email" id="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label id="lbl-phone">Phone number</label>
+            <input type="tel" name="phone" id="phone" autocomplete="tel">
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="btn-submit">Send my RSVP</button>
+
+      </div>
+    </form>
+  </div>
+
+  <footer id="footer-txt">Made with love &nbsp;·&nbsp; Sevgiyle yapıldı</footer>
+
+</div>
+
+<script>
+  // ── TRANSLATIONS ──────────────────────────────────────────────
+  const T = {
+    en: {
+      "h-title":        'You are invited<br><em>Davetlisiniz</em>',
+      "h-sub":          'Please confirm your attendance · Katılımınızı onaylayın',
+      "q-attend":       'Will you be joining us?',
+      "lbl-yes":        'Yes, with joy',
+      "lbl-no":         'I cannot attend',
+      "msg-decline":    'We are sorry you cannot join us.<br>Thank you for letting us know — you will be in our hearts.',
+      "lbl-fname":      'First name',
+      "lbl-lname":      'Last name',
+      "q-children":     'Will you be bringing children?',
+      "lbl-babies":     'Babies (0–3 yrs)',
+      "lbl-toddlers":   'Children (3–12 yrs)',
+      "q-diet":         'Any dietary intolerances?',
+      "d-gluten":       'Gluten-free',
+      "d-dairy":        'Dairy-free',
+      "d-nut":          'Nut allergy',
+      "d-veg":          'Vegetarian',
+      "d-vegan":        'Vegan',
+      "d-halal":        'Halal',
+      "lbl-diet-other": 'Other (please specify)',
+      "q-contact":      'How can we reach you?',
+      "lbl-email":      'Email address',
+      "lbl-phone":      'Phone number',
+      "btn-submit":     'Send my RSVP',
+      "btn-submit-decline": 'Send',
+      "s-title":        'Thank you!',
+      "s-body":         'We have received your response.<br>We look forward to celebrating with you.',
+      "footer-txt":     'Made with love · Sevgiyle yapıldı',
+    },
+    tr: {
+      "h-title":        'Davetlisiniz<br><em>You are invited</em>',
+      "h-sub":          'Katılımınızı onaylayın · Please confirm your attendance',
+      "q-attend":       'Aramıza katılacak mısınız?',
+      "lbl-yes":        'Evet, büyük mutlulukla',
+      "lbl-no":         'Katılamayacağım',
+      "msg-decline":    'Aramızda olamamanız üzücü.<br>Bildirdiğiniz için teşekkür ederiz — kalbimizdesiniz.',
+      "lbl-fname":      'Ad',
+      "lbl-lname":      'Soyad',
+      "q-children":     'Çocuk getirecek misiniz?',
+      "lbl-babies":     'Bebek (0–3 yaş)',
+      "lbl-toddlers":   'Çocuk (3–12 yaş)',
+      "q-diet":         'Besin intoleransınız var mı?',
+      "d-gluten":       'Glutensiz',
+      "d-dairy":        'Süt ürünsüz',
+      "d-nut":          'Fındık alerjisi',
+      "d-veg":          'Vejetaryen',
+      "d-vegan":        'Vegan',
+      "d-halal":        'Helal',
+      "lbl-diet-other": 'Diğer (lütfen belirtin)',
+      "q-contact":      'Size nasıl ulaşabiliriz?',
+      "lbl-email":      'E-posta adresi',
+      "lbl-phone":      'Telefon numarası',
+      "btn-submit":     'RSVP\'mi gönder',
+      "btn-submit-decline": 'Gönder',
+      "s-title":        'Teşekkür ederiz!',
+      "s-body":         'Yanıtınızı aldık.<br>Sizinle kutlamayı dört gözle bekliyoruz.',
+      "footer-txt":     'Sevgiyle yapıldı · Made with love',
+    }
+  };
+
+  let currentLang = 'en';
+  let attending = null;
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn:${lang === 'en' ? 'first' : 'last'}-child`).classList.add('active');
+    document.getElementById('langField').value = lang;
+
+    const t = T[lang];
+    for (const [id, val] of Object.entries(t)) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = val;
+    }
+  }
+
+  function selectAttendance(yes) {
+    attending = yes;
+    document.getElementById('attendanceField').value = yes ? 'yes' : 'no';
+
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo  = document.getElementById('btn-no');
+    btnYes.className = 'choice-btn' + (yes ? ' selected-yes' : '');
+    btnNo.className  = 'choice-btn' + (!yes ? ' selected-no' : '');
+
+    const decline = document.getElementById('step-decline');
+    const details = document.getElementById('step-details');
+
+    if (yes) {
+      decline.classList.add('hidden');
+      decline.classList.remove('revealed');
+      details.classList.remove('hidden');
+      details.classList.add('revealed');
+    } else {
+      details.classList.add('hidden');
+      details.classList.remove('revealed');
+      decline.classList.remove('hidden');
+      decline.classList.add('revealed');
+    }
+  }
+
+  // ── FORM SUBMIT ───────────────────────────────────────────────
+  document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = attending
+      ? document.getElementById('btn-submit')
+      : document.getElementById('btn-submit-decline');
+
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    const data = new FormData(this);
+
+    try {
+      const res = await fetch(this.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        this.style.display = 'none';
+        const ss = document.getElementById('successScreen');
+        ss.style.display = 'block';
+        const t = T[currentLang];
+        document.getElementById('s-title').innerHTML = t['s-title'];
+        document.getElementById('s-body').innerHTML  = t['s-body'];
+      } else {
+        btn.disabled = false;
+        btn.textContent = currentLang === 'tr' ? 'Tekrar deneyin' : 'Try again';
+      }
+    } catch {
+      btn.disabled = false;
+      btn.textContent = currentLang === 'tr' ? 'Tekrar deneyin' : 'Try again';
+    }
+  });
+</script>
+</body>
+</html>
