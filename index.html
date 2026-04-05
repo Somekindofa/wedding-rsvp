@@ -470,6 +470,11 @@
     border-color: #c0392b;
   }
 
+  .req::after {
+    content: ' *';
+    color: #c0392b;
+  }
+
   /* FOOTER */
   footer {
     text-align: center;
@@ -556,11 +561,11 @@
         </p>
         <div class="field-row">
           <div class="field">
-            <label id="lbl-decline-fname">First name</label>
+            <label id="lbl-decline-fname" class="req">First name</label>
             <input type="text" name="decline_first_name" id="decline_first_name" autocomplete="given-name">
           </div>
           <div class="field">
-            <label id="lbl-decline-lname">Last name</label>
+            <label id="lbl-decline-lname" class="req">Last name</label>
             <input type="text" name="decline_last_name" id="decline_last_name" autocomplete="family-name">
           </div>
         </div>
@@ -574,11 +579,11 @@
         <div class="section">
           <div class="field-row">
             <div class="field">
-              <label id="lbl-fname">First name</label>
+              <label id="lbl-fname" class="req">First name</label>
               <input type="text" name="first_name" id="first_name" autocomplete="given-name">
             </div>
             <div class="field">
-              <label id="lbl-lname">Last name</label>
+              <label id="lbl-lname" class="req">Last name</label>
               <input type="text" name="last_name" id="last_name" autocomplete="family-name">
             </div>
           </div>
@@ -639,11 +644,11 @@
         <div class="section">
           <p class="section-label" id="q-contact">How can we reach you?</p>
           <div class="field">
-            <label id="lbl-email">Email address</label>
+            <label id="lbl-email" class="req">Email address</label>
             <input type="email" name="email" id="email" autocomplete="email">
           </div>
           <div class="field">
-            <label id="lbl-phone">Phone number</label>
+            <label id="lbl-phone" class="req">Phone number</label>
             <input type="tel" name="phone" id="phone" autocomplete="tel">
           </div>
         </div>
