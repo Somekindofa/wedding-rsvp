@@ -449,7 +449,7 @@
     </div>
 
     <!-- FORM -->
-    <form id="rsvpForm" action="https://formspree.io/f/xnjooyzr" method="POST">
+    <form id="rsvpForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
 
       <!-- Hidden lang field -->
       <input type="hidden" name="language" id="langField" value="en">
@@ -474,6 +474,16 @@
           We are sorry you cannot join us.<br>
           Thank you for letting us know — you will be in our hearts.
         </p>
+        <div class="field-row">
+          <div class="field">
+            <label id="lbl-decline-fname">First name</label>
+            <input type="text" name="decline_first_name" id="decline_first_name" autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label id="lbl-decline-lname">Last name</label>
+            <input type="text" name="decline_last_name" id="decline_last_name" autocomplete="family-name">
+          </div>
+        </div>
         <button type="submit" class="submit-btn" id="btn-submit-decline">Send</button>
       </div>
 
@@ -516,27 +526,27 @@
           <div class="checkbox-grid">
             <label class="check-item">
               <input type="checkbox" name="diet_gluten" value="gluten">
-              <span id="d-gluten">Gluten-free</span>
+              <span id="d-gluten">Gluten</span>
             </label>
             <label class="check-item">
               <input type="checkbox" name="diet_dairy" value="dairy">
-              <span id="d-dairy">Dairy-free</span>
+              <span id="d-dairy">Dairy / Lactose</span>
             </label>
             <label class="check-item">
               <input type="checkbox" name="diet_nut" value="nuts">
-              <span id="d-nut">Nut allergy</span>
+              <span id="d-nut">Nuts</span>
             </label>
             <label class="check-item">
-              <input type="checkbox" name="diet_veg" value="vegetarian">
-              <span id="d-veg">Vegetarian</span>
+              <input type="checkbox" name="diet_egg" value="eggs">
+              <span id="d-egg">Eggs</span>
             </label>
             <label class="check-item">
-              <input type="checkbox" name="diet_vegan" value="vegan">
-              <span id="d-vegan">Vegan</span>
+              <input type="checkbox" name="diet_shellfish" value="shellfish">
+              <span id="d-shellfish">Shellfish</span>
             </label>
             <label class="check-item">
-              <input type="checkbox" name="diet_halal" value="halal">
-              <span id="d-halal">Halal</span>
+              <input type="checkbox" name="diet_soy" value="soy">
+              <span id="d-soy">Soy</span>
             </label>
           </div>
           <div class="field">
@@ -555,6 +565,27 @@
           <div class="field">
             <label id="lbl-phone">Phone number</label>
             <input type="tel" name="phone" id="phone" autocomplete="tel">
+          </div>
+        </div>
+
+        <!-- SAVE THE DATE -->
+        <div class="section">
+          <p class="section-label" id="q-std">Would you like a physical save-the-date?</p>
+          <div class="choice-group">
+            <button type="button" class="choice-btn" id="btn-std-yes" onclick="selectSTD(true)">
+              <span id="lbl-std-yes">Yes please</span>
+            </button>
+            <button type="button" class="choice-btn" id="btn-std-no" onclick="selectSTD(false)">
+              <span id="lbl-std-no">No thanks</span>
+            </button>
+          </div>
+          <input type="hidden" name="save_the_date" id="stdField" value="">
+
+          <div class="hidden" id="step-mailbox" style="margin-top: 20px;">
+            <div class="field">
+              <label id="lbl-mailbox">Mailing address</label>
+              <input type="text" name="mailbox_address" id="mailbox_address" autocomplete="street-address" placeholder="Street, city, postal code, country">
+            </div>
           </div>
         </div>
 
@@ -583,17 +614,23 @@
       "q-children":     'Will you be bringing children?',
       "lbl-babies":     'Babies (0–3 yrs)',
       "lbl-toddlers":   'Children (3–12 yrs)',
-      "q-diet":         'Any dietary intolerances?',
-      "d-gluten":       'Gluten-free',
-      "d-dairy":        'Dairy-free',
-      "d-nut":          'Nut allergy',
-      "d-veg":          'Vegetarian',
-      "d-vegan":        'Vegan',
-      "d-halal":        'Halal',
+      "q-diet":         'Any food allergies or intolerances?',
+      "d-gluten":       'Gluten',
+      "d-dairy":        'Dairy / Lactose',
+      "d-nut":          'Nuts',
+      "d-egg":          'Eggs',
+      "d-shellfish":    'Shellfish',
+      "d-soy":          'Soy',
       "lbl-diet-other": 'Other (please specify)',
       "q-contact":      'How can we reach you?',
       "lbl-email":      'Email address',
       "lbl-phone":      'Phone number',
+      "lbl-decline-fname": 'First name',
+      "lbl-decline-lname": 'Last name',
+      "q-std":          'Would you like a physical save-the-date?',
+      "lbl-std-yes":    'Yes please',
+      "lbl-std-no":     'No thanks',
+      "lbl-mailbox":    'Mailing address',
       "btn-submit":     'Send my RSVP',
       "btn-submit-decline": 'Send',
       "s-title":        'Thank you!',
@@ -612,17 +649,23 @@
       "q-children":     'Çocuk getirecek misiniz?',
       "lbl-babies":     'Bebek (0–3 yaş)',
       "lbl-toddlers":   'Çocuk (3–12 yaş)',
-      "q-diet":         'Besin intoleransınız var mı?',
-      "d-gluten":       'Glutensiz',
-      "d-dairy":        'Süt ürünsüz',
-      "d-nut":          'Fındık alerjisi',
-      "d-veg":          'Vejetaryen',
-      "d-vegan":        'Vegan',
-      "d-halal":        'Helal',
+      "q-diet":         'Besin alerjiniz veya intoleransınız var mı?',
+      "d-gluten":       'Gluten',
+      "d-dairy":        'Süt / Laktoz',
+      "d-nut":          'Fındık / Kuruyemiş',
+      "d-egg":          'Yumurta',
+      "d-shellfish":    'Kabuklu deniz ürünleri',
+      "d-soy":          'Soya',
       "lbl-diet-other": 'Diğer (lütfen belirtin)',
       "q-contact":      'Size nasıl ulaşabiliriz?',
       "lbl-email":      'E-posta adresi',
       "lbl-phone":      'Telefon numarası',
+      "lbl-decline-fname": 'Ad',
+      "lbl-decline-lname": 'Soyad',
+      "q-std":          'Fiziksel bir save-the-date ister misiniz?',
+      "lbl-std-yes":    'Evet lütfen',
+      "lbl-std-no":     'Hayır teşekkürler',
+      "lbl-mailbox":    'Posta adresi',
       "btn-submit":     'RSVP\'mi gönder',
       "btn-submit-decline": 'Gönder',
       "s-title":        'Teşekkür ederiz!',
@@ -669,6 +712,20 @@
       details.classList.remove('revealed');
       decline.classList.remove('hidden');
       decline.classList.add('revealed');
+    }
+  }
+
+  function selectSTD(yes) {
+    document.getElementById('stdField').value = yes ? 'yes' : 'no';
+    document.getElementById('btn-std-yes').className = 'choice-btn' + (yes ? ' selected-yes' : '');
+    document.getElementById('btn-std-no').className  = 'choice-btn' + (!yes ? ' selected-no' : '');
+    const mailbox = document.getElementById('step-mailbox');
+    if (yes) {
+      mailbox.classList.remove('hidden');
+      mailbox.classList.add('revealed');
+    } else {
+      mailbox.classList.add('hidden');
+      mailbox.classList.remove('revealed');
     }
   }
 
