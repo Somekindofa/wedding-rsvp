@@ -470,6 +470,26 @@
     border-color: #c0392b;
   }
 
+  .revealed-slow {
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .child-name-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .child-name-row .child-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
   .req::after {
     content: ' *';
     color: #c0392b;
@@ -503,12 +523,6 @@
         </a>
       </p>
     </div>
-    <p class="subtitle" style="margin-top:14px;">
-      Questions? &nbsp;·&nbsp; Sorularınız için<br>
-      <a href="mailto:akbas.theo@protonmail.com" style="color:var(--gold);text-decoration:none;">akbas.theo@protonmail.com</a>
-      &nbsp;·&nbsp;
-      <a href="tel:+33651318128" style="color:var(--gold);text-decoration:none;">+33 651318128</a>
-    </p>
   </header>
 
   <!-- LANGUAGE TOGGLE -->
@@ -593,6 +607,25 @@
               <input type="text" name="last_name" id="last_name" autocomplete="family-name">
             </div>
           </div>
+
+          <!-- COUPLE TOGGLE -->
+          <label class="check-item" style="margin-top:8px;" id="lbl-couple-wrap">
+            <input type="checkbox" id="couple-checkbox" onchange="toggleCouple(this.checked)">
+            <span id="lbl-couple">Coming as a couple</span>
+          </label>
+
+          <div class="hidden revealed-slow" id="step-partner" style="margin-top:16px;">
+            <div class="field-row">
+              <div class="field">
+                <label id="lbl-pfname" class="req">Partner's first name</label>
+                <input type="text" name="partner_first_name" id="partner_first_name" autocomplete="given-name">
+              </div>
+              <div class="field">
+                <label id="lbl-plname" class="req">Partner's last name</label>
+                <input type="text" name="partner_last_name" id="partner_last_name" autocomplete="family-name">
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- CHILDREN -->
@@ -602,13 +635,20 @@
           <div class="field-row">
             <div class="field">
               <label id="lbl-babies">Babies (0–3 yrs)</label>
-              <input type="number" name="babies" id="babies" min="0" max="10" value="0">
+              <input type="number" name="babies" id="babies" min="0" max="10" value="0" oninput="updateChildNames()">
             </div>
             <div class="field">
               <label id="lbl-toddlers">Children (3–12 yrs)</label>
-              <input type="number" name="toddlers" id="toddlers" min="0" max="10" value="0">
+              <input type="number" name="toddlers" id="toddlers" min="0" max="10" value="0" oninput="updateChildNames()">
+            </div>
+            <div class="field">
+              <label id="lbl-teens">Adolescents (12–17 yrs)</label>
+              <input type="number" name="teens" id="teens" min="0" max="10" value="0" oninput="updateChildNames()">
             </div>
           </div>
+
+          <!-- DYNAMIC CHILD NAME FIELDS -->
+          <div id="child-names-container"></div>
         </div>
 
         <!-- DIETARY -->
@@ -705,6 +745,10 @@
       "q-children":     'Will you be bringing children?',
       "lbl-babies":     'Babies (0–3 yrs)',
       "lbl-toddlers":   'Children (3–12 yrs)',
+      "lbl-teens":      'Adolescents (12–17 yrs)',
+      "lbl-couple":     'Coming as a couple',
+      "lbl-pfname":     'Partner\'s first name',
+      "lbl-plname":     'Partner\'s last name',
       "q-diet":         'Any food allergies or intolerances?',
       "d-gluten":       'Gluten',
       "d-dairy":        'Dairy / Lactose',
@@ -743,6 +787,10 @@
       "q-children":     'Çocuk getirecek misiniz?',
       "lbl-babies":     'Bebek (0–3 yaş)',
       "lbl-toddlers":   'Çocuk (3–12 yaş)',
+      "lbl-teens":      'Genç (12–17 yaş)',
+      "lbl-couple":     'Çift olarak geliyoruz',
+      "lbl-pfname":     'Eşinizin adı',
+      "lbl-plname":     'Eşinizin soyadı',
       "q-diet":         'Besin alerjiniz veya intoleransınız var mı?',
       "d-gluten":       'Gluten',
       "d-dairy":        'Süt / Laktoz',
@@ -809,6 +857,52 @@
       details.classList.remove('revealed');
       decline.classList.remove('hidden');
       decline.classList.add('revealed');
+    }
+  }
+
+  function toggleCouple(checked) {
+    const el = document.getElementById('step-partner');
+    if (checked) {
+      el.classList.remove('hidden');
+      el.classList.add('revealed-slow');
+    } else {
+      el.classList.add('hidden');
+      el.classList.remove('revealed-slow');
+    }
+  }
+
+  function updateChildNames() {
+    const babies   = parseInt(document.getElementById('babies').value)   || 0;
+    const toddlers = parseInt(document.getElementById('toddlers').value) || 0;
+    const teens    = parseInt(document.getElementById('teens').value)    || 0;
+    const total    = babies + toddlers + teens;
+
+    const container = document.getElementById('child-names-container');
+    const existing  = container.querySelectorAll('.child-name-row').length;
+
+    const labelChild = currentLang === 'tr' ? 'Çocuk' : 'Child';
+
+    if (total > existing) {
+      for (let i = existing + 1; i <= total; i++) {
+        const row = document.createElement('div');
+        row.className = 'child-name-row';
+        row.innerHTML = `
+          <div class="field" style="flex:1;">
+            <label class="child-label">${labelChild} ${i}</label>
+            <div style="display:flex;gap:12px;">
+              <input type="text" name="child_${i}_first" placeholder="${currentLang === 'tr' ? 'Ad' : 'First name'}"
+                style="flex:1;padding:11px 14px;font-family:inherit;font-size:0.9rem;font-weight:300;color:var(--dark);background:var(--cream);border:1px solid var(--light-border);border-radius:2px;outline:none;">
+              <input type="text" name="child_${i}_last" placeholder="${currentLang === 'tr' ? 'Soyad' : 'Last name'}"
+                style="flex:1;padding:11px 14px;font-family:inherit;font-size:0.9rem;font-weight:300;color:var(--dark);background:var(--cream);border:1px solid var(--light-border);border-radius:2px;outline:none;">
+            </div>
+          </div>`;
+        container.appendChild(row);
+      }
+    } else if (total < existing) {
+      const rows = container.querySelectorAll('.child-name-row');
+      for (let i = existing; i > total; i--) {
+        rows[i - 1].remove();
+      }
     }
   }
 
