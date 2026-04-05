@@ -402,6 +402,69 @@
     border-color: var(--gold);
   }
 
+  /* SAVE THE DATE BANNER */
+  .std-banner {
+    background: var(--warm-white);
+    border: 1px solid var(--light-border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    text-align: center;
+    box-shadow: 0 2px 4px var(--shadow);
+  }
+
+  .std-banner-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .std-banner-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--dark);
+    letter-spacing: 0.04em;
+  }
+
+  /* VISA NOTE */
+  .visa-note {
+    background: var(--warm-white);
+    border: 1px solid var(--light-border);
+    border-left: 3px solid var(--gold-light);
+    border-radius: 0 4px 4px 0;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+
+  .visa-note-title {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .visa-note p {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.75;
+  }
+
+  .visa-note a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--light-border);
+    transition: border-color 0.2s;
+  }
+
+  .visa-note a:hover { border-color: var(--gold); }
+
   /* FOOTER */
   footer {
     text-align: center;
@@ -436,6 +499,18 @@
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('en')">English</button>
     <button class="lang-btn" onclick="setLang('tr')">Türkçe</button>
+  </div>
+
+  <!-- SAVE THE DATE BANNER -->
+  <div class="std-banner">
+    <p class="std-banner-label" id="std-label">Please reply by</p>
+    <p class="std-banner-date">31 October 2026 &nbsp;·&nbsp; 31 Ekim 2026</p>
+  </div>
+
+  <!-- VISA NOTE -->
+  <div class="visa-note">
+    <p class="visa-note-title" id="visa-title">🛂 Travelling from Turkey?</p>
+    <p id="visa-body">Turkish citizens need a Schengen visa to enter France. Appointment slots fill up fast, especially in Istanbul and Ankara, so <strong>we recommend starting the process at least 2 months before travel</strong>. Once you have an appointment, processing is usually under 2 weeks. You can apply via <a href="https://france-visas.gouv.fr" target="_blank" rel="noopener">france-visas.gouv.fr</a> or through a <a href="https://visa.vfsglobal.com/tur/en/fra" target="_blank" rel="noopener">VFS Global centre</a> in Ankara, Istanbul, Izmir or Gaziantep.</p>
   </div>
 
   <!-- FORM CARD -->
@@ -636,6 +711,9 @@
       "s-title":        'Thank you!',
       "s-body":         'We have received your response.<br>We look forward to celebrating with you.',
       "footer-txt":     'Made with love · Sevgiyle yapıldı',
+      "std-label":      'Please reply by',
+      "visa-title":     '🛂 Travelling from Turkey?',
+      "visa-body":      'Turkish citizens need a Schengen visa to enter France. Appointment slots fill up fast, especially in Istanbul and Ankara, so <strong>we recommend starting the process at least 2 months before travel</strong>. Once you have an appointment, processing is usually under 2 weeks. You can apply via <a href="https://france-visas.gouv.fr" target="_blank" rel="noopener">france-visas.gouv.fr</a> or through a <a href="https://visa.vfsglobal.com/tur/en/fra" target="_blank" rel="noopener">VFS Global centre</a> in Ankara, Istanbul, Izmir or Gaziantep.',
     },
     tr: {
       "h-title":        'Davetlisiniz<br><em>You are invited</em>',
@@ -671,6 +749,9 @@
       "s-title":        'Teşekkür ederiz!',
       "s-body":         'Yanıtınızı aldık.<br>Sizinle kutlamayı dört gözle bekliyoruz.',
       "footer-txt":     'Sevgiyle yapıldı · Made with love',
+      "std-label":      'Lütfen şu tarihe kadar yanıtlayın',
+      "visa-title":     '🛂 Türkiye\'den geliyor musunuz?',
+      "visa-body":      'Türk vatandaşları Fransa\'ya girmek için Schengen vizesi almak zorundadır. Randevu slotları, özellikle İstanbul ve Ankara\'da hızlı dolduğundan, <strong>seyahattan en az 2 ay önce başlamanızı tavsiye ederiz</strong>. Randevu alındıktan sonra işlem genellikle 2 haftadan kısa sürer. Başvuruyu <a href="https://france-visas.gouv.fr" target="_blank" rel="noopener">france-visas.gouv.fr</a> üzerinden veya Ankara, İstanbul, İzmir ya da Gaziantep\'teki <a href="https://visa.vfsglobal.com/tur/tr/fra" target="_blank" rel="noopener">VFS Global merkezi</a> aracılığıyla yapabilirsiniz.',
     }
   };
 
