@@ -430,7 +430,7 @@
     letter-spacing: 0.04em;
   }
 
-  /* VISA NOTE */
+  /* VISA NOTE / INFO CALLOUT */
   .visa-note {
     background: var(--warm-white);
     border: 1px solid var(--light-border);
@@ -472,22 +472,6 @@
 
   .revealed-slow {
     animation: fadeIn 0.3s ease forwards;
-  }
-
-  .child-name-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-    animation: fadeIn 0.3s ease forwards;
-  }
-
-  .child-name-row .child-label {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
   }
 
   .req::after {
@@ -539,6 +523,12 @@
   <div class="std-banner">
     <p class="std-banner-label" id="std-label">Please reply by</p>
     <p class="std-banner-date">31 October 2026 &nbsp;·&nbsp; 31 Ekim 2026</p>
+  </div>
+
+  <!-- CHILDREN CIRCLE NOTE -->
+  <div class="visa-note">
+    <p class="visa-note-title" id="circle-title">👨‍👩‍👧 A note on children</p>
+    <p id="circle-body">For organizational convenience, we've kept the children joining us to our first-cousin generation only. We kindly ask that you arrange care for yours that evening, and simply come celebrate with us.</p>
   </div>
 
   <!-- VISA NOTE -->
@@ -632,29 +622,6 @@
           </div>
         </div>
 
-        <!-- CHILDREN -->
-        <div class="section">
-          <p class="section-label" id="q-children">Will you be bringing children?</p>
-
-          <div class="field-row">
-            <div class="field">
-              <label id="lbl-babies">Babies (0–3 yrs)</label>
-              <input type="number" name="babies" id="babies" min="0" max="10" value="0" oninput="updateChildNames()">
-            </div>
-            <div class="field">
-              <label id="lbl-toddlers">Children (3–12 yrs)</label>
-              <input type="number" name="toddlers" id="toddlers" min="0" max="10" value="0" oninput="updateChildNames()">
-            </div>
-            <div class="field">
-              <label id="lbl-teens">Adolescents (12–17 yrs)</label>
-              <input type="number" name="teens" id="teens" min="0" max="10" value="0" oninput="updateChildNames()">
-            </div>
-          </div>
-
-          <!-- DYNAMIC CHILD NAME FIELDS -->
-          <div id="child-names-container"></div>
-        </div>
-
         <!-- DIETARY -->
         <div class="section">
           <p class="section-label" id="q-diet">Any dietary intolerances?</p>
@@ -740,16 +707,14 @@
     en: {
       "h-title":        'You are invited<br><em>Davetlisiniz</em>',
       "h-sub":          'Please confirm your attendance · Katılımınızı onaylayın',
+      "circle-title":   '👨‍👩‍👧 A note on children',
+      "circle-body":    'For organizational convenience, we\'ve kept the children joining us to our first-cousin generation only. We kindly ask that you arrange care for yours that evening, and simply come celebrate with us.',
       "q-attend":       'Will you be joining us?',
       "lbl-yes":        'Yes, with joy',
       "lbl-no":         'I cannot attend',
       "msg-decline":    'We are sorry you cannot join us.<br>Thank you for letting us know — you will be in our hearts.',
       "lbl-fname":      'First name',
       "lbl-lname":      'Last name',
-      "q-children":     'Will you be bringing children?',
-      "lbl-babies":     'Babies (0–3 yrs)',
-      "lbl-toddlers":   'Children (3–12 yrs)',
-      "lbl-teens":      'Adolescents (12–17 yrs)',
       "lbl-couple":     'Coming as a couple',
       "lbl-pfname":     'Partner\'s first name',
       "lbl-plname":     'Partner\'s last name',
@@ -782,16 +747,14 @@
     tr: {
       "h-title":        'Davetlisiniz<br><em>You are invited</em>',
       "h-sub":          'Katılımınızı onaylayın · Please confirm your attendance',
+      "circle-title":   '👨‍👩‍👧 Çocuklar hakkında bir not',
+      "circle-body":    'Organizasyon kolaylığı açısından, düğüne katılacak çocukları yalnızca birinci dereceden kuzenlerimizle sınırlı tutuyoruz. Bu yüzden o akşam için çocuklarınıza bakacak birini ayarlamanızı nazikçe rica ediyoruz; siz gelip bizimle kutlayın.',
       "q-attend":       'Aramıza katılacak mısınız?',
       "lbl-yes":        'Evet, büyük mutlulukla',
       "lbl-no":         'Katılamayacağım',
       "msg-decline":    'Aramızda olamamanız üzücü.<br>Bildirdiğiniz için teşekkür ederiz — kalbimizdesiniz.',
       "lbl-fname":      'Ad',
       "lbl-lname":      'Soyad',
-      "q-children":     'Çocuk getirecek misiniz?',
-      "lbl-babies":     'Bebek (0–3 yaş)',
-      "lbl-toddlers":   'Çocuk (3–12 yaş)',
-      "lbl-teens":      'Genç (12–17 yaş)',
       "lbl-couple":     'Çift olarak geliyoruz',
       "lbl-pfname":     'Eşinizin adı',
       "lbl-plname":     'Eşinizin soyadı',
@@ -872,41 +835,6 @@
     } else {
       el.classList.add('hidden');
       el.classList.remove('revealed-slow');
-    }
-  }
-
-  function updateChildNames() {
-    const babies   = parseInt(document.getElementById('babies').value)   || 0;
-    const toddlers = parseInt(document.getElementById('toddlers').value) || 0;
-    const teens    = parseInt(document.getElementById('teens').value)    || 0;
-    const total    = babies + toddlers + teens;
-
-    const container = document.getElementById('child-names-container');
-    const existing  = container.querySelectorAll('.child-name-row').length;
-
-    const labelChild = currentLang === 'tr' ? 'Çocuk' : 'Child';
-
-    if (total > existing) {
-      for (let i = existing + 1; i <= total; i++) {
-        const row = document.createElement('div');
-        row.className = 'child-name-row';
-        row.innerHTML = `
-          <div class="field" style="flex:1;">
-            <label class="child-label">${labelChild} ${i}</label>
-            <div style="display:flex;gap:12px;">
-              <input type="text" name="child_${i}_first" placeholder="${currentLang === 'tr' ? 'Ad' : 'First name'}"
-                style="flex:1;padding:11px 14px;font-family:inherit;font-size:0.9rem;font-weight:300;color:var(--dark);background:var(--cream);border:1px solid var(--light-border);border-radius:2px;outline:none;">
-              <input type="text" name="child_${i}_last" placeholder="${currentLang === 'tr' ? 'Soyad' : 'Last name'}"
-                style="flex:1;padding:11px 14px;font-family:inherit;font-size:0.9rem;font-weight:300;color:var(--dark);background:var(--cream);border:1px solid var(--light-border);border-radius:2px;outline:none;">
-            </div>
-          </div>`;
-        container.appendChild(row);
-      }
-    } else if (total < existing) {
-      const rows = container.querySelectorAll('.child-name-row');
-      for (let i = existing; i > total; i--) {
-        rows[i - 1].remove();
-      }
     }
   }
 
