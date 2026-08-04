@@ -548,7 +548,7 @@
     </div>
 
     <!-- FORM -->
-    <form id="rsvpForm" action="https://formspree.io/f/xnjooyzr" method="POST">
+    <form id="rsvpForm" action="https://formspree.io/f/xnjooyzr" method="POST" novalidate>
 
       <!-- Hidden lang field -->
       <input type="hidden" name="language" id="langField" value="en">
@@ -576,11 +576,11 @@
         <div class="field-row">
           <div class="field">
             <label id="lbl-decline-fname" class="req">First name</label>
-            <input type="text" name="decline_first_name" id="decline_first_name" autocomplete="given-name">
+            <input type="text" name="decline_first_name" id="decline_first_name" autocomplete="given-name" required>
           </div>
           <div class="field">
             <label id="lbl-decline-lname" class="req">Last name</label>
-            <input type="text" name="decline_last_name" id="decline_last_name" autocomplete="family-name">
+            <input type="text" name="decline_last_name" id="decline_last_name" autocomplete="family-name" required>
           </div>
         </div>
         <button type="submit" class="submit-btn" id="btn-submit-decline">Send</button>
@@ -594,11 +594,11 @@
           <div class="field-row">
             <div class="field">
               <label id="lbl-fname" class="req">First name</label>
-              <input type="text" name="first_name" id="first_name" autocomplete="given-name">
+              <input type="text" name="first_name" id="first_name" autocomplete="given-name" required>
             </div>
             <div class="field">
               <label id="lbl-lname" class="req">Last name</label>
-              <input type="text" name="last_name" id="last_name" autocomplete="family-name">
+              <input type="text" name="last_name" id="last_name" autocomplete="family-name" required>
             </div>
           </div>
 
@@ -662,10 +662,10 @@
           <p class="section-label" id="q-contact">How can we reach you?</p>
           <div class="field">
             <label id="lbl-email" class="req">Email address</label>
-            <input type="email" name="email" id="email" autocomplete="email">
+            <input type="email" name="email" id="email" autocomplete="email" required>
           </div>
           <div class="field">
-            <label id="lbl-phone" class="req">Phone number</label>
+            <label id="lbl-phone">Phone number</label>
             <input type="tel" name="phone" id="phone" autocomplete="tel">
           </div>
         </div>
@@ -852,9 +852,55 @@
     }
   }
 
+  // ── VALIDATION ────────────────────────────────────────────────
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function markField(input, valid) {
+    input.classList.toggle('error', !valid);
+    return valid;
+  }
+
+  function validateDetails() {
+    let valid = true;
+    if (!markField(document.getElementById('first_name'), document.getElementById('first_name').value.trim() !== '')) valid = false;
+    if (!markField(document.getElementById('last_name'), document.getElementById('last_name').value.trim() !== '')) valid = false;
+
+    if (document.getElementById('couple-checkbox').checked) {
+      if (!markField(document.getElementById('partner_first_name'), document.getElementById('partner_first_name').value.trim() !== '')) valid = false;
+      if (!markField(document.getElementById('partner_last_name'), document.getElementById('partner_last_name').value.trim() !== '')) valid = false;
+    }
+
+    const email = document.getElementById('email');
+    if (!markField(email, isValidEmail(email.value.trim()))) valid = false;
+
+    return valid;
+  }
+
+  function validateDecline() {
+    let valid = true;
+    if (!markField(document.getElementById('decline_first_name'), document.getElementById('decline_first_name').value.trim() !== '')) valid = false;
+    if (!markField(document.getElementById('decline_last_name'), document.getElementById('decline_last_name').value.trim() !== '')) valid = false;
+    return valid;
+  }
+
+  document.getElementById('rsvpForm').addEventListener('input', function(e) {
+    if (e.target.classList && e.target.classList.contains('error')) {
+      e.target.classList.remove('error');
+    }
+  });
+
   // ── FORM SUBMIT ───────────────────────────────────────────────
   document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+
+    const isValid = attending ? validateDetails() : validateDecline();
+    if (!isValid) {
+      const firstError = this.querySelector('.error');
+      if (firstError) firstError.focus();
+      return;
+    }
 
     const btn = attending
       ? document.getElementById('btn-submit')
